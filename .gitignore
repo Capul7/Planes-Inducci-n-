@@ -1,0 +1,17 @@
+# Visual Studio / .NET
+.vs/
+**/.vs/
+bin/
+obj/
+publish/
+*.user
+*.suo
+
+# Config local
+appsettings.Development.json
+secrets.json
+
+# Archivos del sistema
+*.log
+*.DS_Store
+Thumbs.db

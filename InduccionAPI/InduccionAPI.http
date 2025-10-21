@@ -1,0 +1,6 @@
+@InduccionAPI_HostAddress = http://localhost:5072
+
+GET {{InduccionAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
