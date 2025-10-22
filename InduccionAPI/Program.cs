@@ -12,7 +12,7 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddCors(o =>
 {
     o.AddPolicy("AllowFront", p => p
-        .WithOrigins("http://localhost:5173", "http://localhost:4200", "http://localhost:5173")
+        .WithOrigins("https://localhost:4173", "http://localhost:4200", "http://localhost:5173", "https://TU-FRONT.com")
         .AllowAnyHeader()
         .AllowAnyMethod());
 });
@@ -42,6 +42,7 @@ builder.Services.AddControllers();
 
 // DI
 builder.Services.AddScoped<IAuthService, AuthService>();
+
 
 var app = builder.Build();
 
