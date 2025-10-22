@@ -1,0 +1,36 @@
+name: 🚀 Deploy .NET 8 API to Azure App Service
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🧰 Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: 🔧 Restore dependencies
+        run: dotnet restore ./InduccionAPI.sln
+
+      - name: 🏗️ Build
+        run: dotnet build ./InduccionAPI.sln --configuration Release --no-restore
+
+      - name: 🚀 Publish
+        run: dotnet publish ./InduccionAPI/InduccionAPI.csproj -c Release -o ./publish --no-build
+
+      - name: 🌐 Deploy to Azure
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: planes-induccion-api       # 👈 nombre exacto de tu App Service
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: ./publish
