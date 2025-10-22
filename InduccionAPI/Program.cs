@@ -45,7 +45,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 var app = builder.Build();
-
+app.UseHttpsRedirection();     // opcional pero recomendado
 app.UseCors("AllowFront");
 app.UseAuthentication();
 app.UseAuthorization();
