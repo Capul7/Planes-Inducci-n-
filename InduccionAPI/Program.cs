@@ -11,10 +11,12 @@ builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection("Jwt"));
 // CORS (ajusta origen del frontend)
 builder.Services.AddCors(o =>
 {
-    o.AddPolicy("AllowFront", p => p
-        .WithOrigins("https://localhost:4173", "http://localhost:4200", "http://localhost:5173", "https://TU-FRONT.com")
+    o.AddPolicy("DevFront", p => p
+        .WithOrigins("https://localhost:4173", "http://localhost:4200", "http://localhost:5173", "http://localhost:5173", "https://gray-sky-02830b21e.3.azurestaticapps.net")
         .AllowAnyHeader()
-        .AllowAnyMethod());
+        .AllowAnyMethod()
+        .AllowCredentials()  // opciona
+    );
 });
 
 // Auth JWT
@@ -45,16 +47,19 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 
 var app = builder.Build();
-app.UseHttpsRedirection();     // opcional pero recomendado
-app.UseCors("AllowFront");
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
+app.UseCors("DevFront");
 app.UseAuthentication();
 app.UseAuthorization();
 
 //Aplica la policy a todos los controladores mapeados
-app.MapControllers().RequireCors("AllowFront");
+app.MapControllers().RequireCors("DevFront");
 
 //Respuesta al preflight (OPTIONS) para cualquier ruta bajo /api
 app.MapMethods("/api/{**path}", new[] { "OPTIONS" }, () => Results.Ok())
-   .RequireCors("AllowFront");
+   .RequireCors("DevFront");
 
 app.Run();
