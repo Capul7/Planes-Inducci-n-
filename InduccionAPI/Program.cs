@@ -1,6 +1,9 @@
 using Api.Auth.Services;
+using InduccionAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -42,9 +45,14 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 
+var connString = builder.Configuration.GetConnectionString("SqlDb");
+builder.Services.AddScoped<IDbConnection>(_ => new SqlConnection(connString));
+
+Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;//para que dapper mappe bien los geters y setters.
+
 // DI
 builder.Services.AddScoped<IAuthService, AuthService>();
-
+builder.Services.AddScoped<IColaboradoresService, ColaboradoresService>();
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
