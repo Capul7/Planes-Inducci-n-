@@ -22,6 +22,10 @@ builder.Services.AddCors(o =>
     );
 });
 
+// Swagger
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 // Auth JWT
 var jwt = builder.Configuration.GetSection("Jwt").Get<JwtOptions>()!;
 var key = Encoding.UTF8.GetBytes(jwt.Key);
@@ -53,6 +57,15 @@ Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;//para que dapper mappe b
 // DI
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IColaboradoresService, ColaboradoresService>();
+builder.Services.AddScoped<IRolesService, RolesService>();
+builder.Services.AddScoped<IDepartamentosService, DepartamentosService>();
+builder.Services.AddScoped<IPuestosService, PuestosService>();
+builder.Services.AddScoped<IContenidoService, ContenidoService>();
+builder.Services.AddScoped<IPlanesService, PlanesService>();
+builder.Services.AddScoped<IPlanDetalleService, PlanDetalleService>();
+//builder.Services.AddScoped<IChatbotService, ChatbotService>();
+//builder.Services.AddScoped<IRetroalimentacionService, RetroalimentacionService>();
+//builder.Services.AddScoped<IIndicadorAvanceService, IndicadorAvanceService>();
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
